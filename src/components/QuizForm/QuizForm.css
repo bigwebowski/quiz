@@ -1,0 +1,21 @@
+.quiz-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.answers-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: ivory;
+}
+
+.correct {
+    background-color: blue;
+}
+
+.incorrect {
+    background-color: red;
+}
