@@ -25,10 +25,7 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     case actionTypes.QUESTIONS_FETCH_SUCCESS:
       const questionsWithAnswersShuffled = action.questions.map((question) => {
-        const shuffledAnswers = shuffleArray([
-          ...question.incorrect_answers,
-          question.correct_answer,
-        ]);
+        const shuffledAnswers = shuffleArray([...question.incorrect_answers, question.correct_answer]);
 
         question.correct_answer = [question.correct_answer];
         return { ...question, all_answers: shuffledAnswers };

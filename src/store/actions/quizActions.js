@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import * as actionTypes from './actionTypes';
+import { QUESTIONS_DATA } from '../../constants/endpoints';
 
 const questionsFetchStart = () => ({
   type: actionTypes.QUESTIONS_FETCH_START,
@@ -20,7 +21,7 @@ export const fetchQuestions = () => (dispatch) => {
   dispatch(questionsFetchStart());
 
   axios
-    .get('https://opentdb.com/api.php?amount=2')
+    .get(QUESTIONS_DATA)
     .then((res) => dispatch(questionsFetchSuccess(res.data.results)))
     .catch((err) => dispatch(questionsFetchFail(err)));
 };

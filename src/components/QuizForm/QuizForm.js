@@ -1,34 +1,21 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
+
 import './QuizForm.css';
 
 import Button from '../UI/Button/Button';
 
-function QuizForm({
-  questions,
-  handleAnswerClick,
-  handleNextQuestion,
-  currentQuestion,
-  isAnswered,
-}) {
-  const { all_answers: allAnswers, correct_answer: correctAnswers } =
-    questions[currentQuestion];
+function QuizForm({ questions, handleAnswerClick, handleNextQuestion, currentQuestion, isAnswered }) {
+  const { all_answers: allAnswers, correct_answer: correctAnswers } = questions[currentQuestion];
 
   const handleSelectAnswers = (values) => handleAnswerClick(values.checked);
 
   const checkBoxes = allAnswers.map((answer) => {
-    const checkBoxStyle = correctAnswers.includes(answer)
-      ? 'correct'
-      : 'incorrect';
+    const checkBoxStyle = correctAnswers.includes(answer) ? 'correct' : 'incorrect';
 
     return (
       <label key={answer} className={isAnswered ? checkBoxStyle : ''}>
-        <Field
-          type="checkbox"
-          name="checked"
-          value={answer}
-          disabled={isAnswered}
-        />
+        <Field type="checkbox" name="checked" value={answer} disabled={isAnswered} />
         {answer}
       </label>
     );
@@ -47,21 +34,14 @@ function QuizForm({
           <Form>
             <h3>{questions[currentQuestion].question}</h3>
 
-            <div
-              role="group"
-              aria-labelledby="checkbox-group"
-              className="answers-container"
-            >
+            <div role="group" aria-labelledby="checkbox-group" className="answers-container">
               {checkBoxes}
             </div>
 
             <Button type="submit" disabled={isAnswered}>
               Answer
             </Button>
-            <Button
-              clicked={() => handleNextQuestion(resetForm)}
-              disabled={!isAnswered}
-            >
+            <Button clicked={() => handleNextQuestion(resetForm)} disabled={!isAnswered}>
               Next Question
             </Button>
           </Form>
