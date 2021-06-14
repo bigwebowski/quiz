@@ -4,12 +4,15 @@ import { resetQuiz } from '../../store/actions';
 
 import Button from '../UI/Button/Button';
 
-function QuizResults() {
+function QuizResults({ history }) {
   const dispatch = useDispatch();
 
   const { score, questions, startTime, finishTime } = useSelector(({ quiz }) => quiz);
 
-  const onQuizReset = () => dispatch(resetQuiz());
+  const onQuizReset = () => {
+    dispatch(resetQuiz());
+    history.push('/');
+  };
 
   const finalScore = Math.floor((score / questions.length) * 100);
   const totalTime = ((finishTime - startTime) / 1000).toFixed(2);
