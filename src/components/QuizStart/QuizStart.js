@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchQuestions, logout } from '../../store/actions';
 
-import Button from '../UI/Button/Button';
-import Spinner from '../UI/Spinner/Spinner';
+import Button from '../UI/Button';
+import Spinner from '../UI/Spinner';
 
 function QuizStart({ history }) {
   const dispatch = useDispatch();
@@ -18,8 +18,8 @@ function QuizStart({ history }) {
       {!isLoading && (
         <div>
           <p>Welcome! Click the button to start the quiz</p>
-          <Button clicked={onFetchQuestions}>Start</Button>
-          <Button clicked={onLogout}>Logout</Button>
+          <Button onClick={onFetchQuestions}>Start</Button>
+          <Button onClick={onLogout}>Logout</Button>
         </div>
       )}
     </>

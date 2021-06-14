@@ -1,18 +1,22 @@
+import './QuizForm.css';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { acceptAnswer, setCurrentQuestion, stopTimer } from '../../store/actions';
+import { useHistory } from 'react-router-dom';
 
-import './QuizForm.css';
+import Button from '../UI/Button';
 
-import Button from '../UI/Button/Button';
-
-function QuizForm({ history }) {
+function QuizForm() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { register, handleSubmit } = useForm();
 
-  const { questions, currentQuestion, isAnswered } = useSelector(({ quiz }) => quiz);
+  const { questions, currentQuestion, isAnswered, score } = useSelector(({ quiz }) => quiz);
+
+  console.log(currentQuestion);
+  console.log(score);
+
   const { all_answers: allAnswers, correct_answer: correctAnswers } = questions[currentQuestion];
 
   const onSetCurrentQuestion = () => dispatch(setCurrentQuestion());
@@ -26,12 +30,16 @@ function QuizForm({ history }) {
       correctAnswers.length > selectedAnswers.length
         ? selectedAnswers.length / correctAnswers.length
         : 1;
+
     const singleQuestionScore = selectedAnswers
       .map((answer) => correctAnswers.includes(answer))
       .reduce((sum, el) => {
         el && (sum += (1 / selectedAnswers.length) * scoreCoefficient);
         return sum;
       }, 0);
+
+    console.log(correctAnswers);
+    console.log(selectedAnswers);
 
     onAcceptAnswer(singleQuestionScore);
   };
@@ -59,39 +67,16 @@ function QuizForm({ history }) {
   return (
     <form onSubmit={handleSubmit(handleAnswerSubmit)}>
       <h3>{questions[currentQuestion].question}</h3>
+
       {checkBoxes}
+
       <Button type="submit" disabled={isAnswered}>
         Answer
       </Button>
-      <Button clicked={handleNextQuestion} disabled={!isAnswered}>
+      <Button onClick={handleNextQuestion} disabled={!isAnswered}>
         Next Question
       </Button>
     </form>
-
-    /*<div className="quiz-form">
-      <Formik
-        initialValues={{
-          checked: [],
-        }}
-        onSubmit={(values) => handleSelectAnswers(values)}
-        enableReinitialize
-      >
-        {({ values, resetForm }) => (
-          <Form>
-            <h3>{questions[currentQuestion].question}</h3>
-            <div role="group" aria-labelledby="checkbox-group" className="answers-container">
-              {checkBoxes}
-            </div>
-            <Button type="submit" disabled={isAnswered}>
-              Answer
-            </Button>
-            <Button clicked={() => handleNextQuestion(resetForm)} disabled={!isAnswered}>
-              Next Question
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </div>*/
   );
 }
 

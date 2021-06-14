@@ -1,22 +1,27 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './Auth/PrivateRoute';
 
-import QuizStart from '../components/QuizStart/QuizStart';
-import QuizForm from '../components/QuizForm/QuizForm';
-import QuizResults from '../components/QuizResults/QuizResults';
-import LoginForm from '../components/LoginForm/LoginForm';
+import QuizStart from '../components/QuizStart';
+import QuizForm from '../components/QuizForm';
+import QuizResults from '../components/QuizResults';
+import LoginForm from '../components/LoginForm';
+import NotFound from '../components/UI/NotFound';
 
 function App() {
+  const { questions } = useSelector(({ quiz }) => quiz);
+
   return (
     <Router>
-      <div>
+      <Switch>
         <PrivateRoute exact path="/" component={QuizStart} />
-        <PrivateRoute exact path="/quiz" component={QuizForm} />
+        {Boolean(questions.length) && <PrivateRoute exact path="/quiz" component={QuizForm} />}
         <PrivateRoute exact path="/results" component={QuizResults} />
-        <Route exact path="/login" render={(routerProps) => <LoginForm {...routerProps} />} />
-      </div>
+        <Route exact path="/login" component={LoginForm} />
+        <Route path="*" component={NotFound} />
+      </Switch>
     </Router>
   );
 }

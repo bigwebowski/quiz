@@ -26,8 +26,8 @@ export const auth = (email, password, history) => (dispatch) => {
   dispatch(authStart());
 
   const authData = {
-    email: email,
-    password: password,
+    email,
+    password,
     returnSecureToken: true,
   };
 

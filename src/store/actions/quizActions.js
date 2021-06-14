@@ -10,6 +10,7 @@ const questionsFetchStart = () => ({
 const questionsFetchSuccess = (questions) => ({
   type: actionTypes.QUESTIONS_FETCH_SUCCESS,
   questions,
+  startTime: Date.now(),
 });
 
 const questionsFetchFail = (error) => ({
@@ -44,4 +45,5 @@ export const resetQuiz = () => ({
 
 export const stopTimer = () => ({
   type: actionTypes.STOP_TIMER,
+  finishTime: Date.now(),
 });

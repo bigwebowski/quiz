@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetQuiz } from '../../store/actions';
+import { useHistory } from 'react-router-dom';
 
-import Button from '../UI/Button/Button';
+import Button from '../UI/Button';
 
-function QuizResults({ history }) {
+function QuizResults() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { score, questions, startTime, finishTime } = useSelector(({ quiz }) => quiz);
+
+  useLayoutEffect(() => {
+    if (!startTime) {
+      history.push('/');
+    }
+  }, [startTime, history]);
 
   const onQuizReset = () => {
     dispatch(resetQuiz());
@@ -23,7 +31,7 @@ function QuizResults({ history }) {
       <p>Your final score is {finalScore}% </p>
       <p>Total time is {totalTime} seconds</p>
       <p>Average answer time for each question is {averageTime} seconds</p>
-      <Button clicked={onQuizReset}>Reset quiz</Button>
+      <Button onClick={onQuizReset}>Reset quiz</Button>
     </div>
   );
 }
