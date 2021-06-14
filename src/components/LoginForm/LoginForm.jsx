@@ -1,31 +1,30 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 
-import { Field, reduxForm } from 'redux-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { auth } from '../../store/actions';
 
-function LoginForm(props) {
-  const { handleSubmit, pristine, reset, submitting } = props;
+import Spinner from '../UI/Spinner/Spinner';
+
+function LoginForm({ history }) {
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector(({ auth }) => auth);
+  const { register, handleSubmit } = useForm();
+
+  const handleLogin = ({ email, password }) => dispatch(auth(email, password, history));
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Email</label>
-        <div>
-          <Field name="email" component="input" type="email" placeholder="Email" />
-        </div>
-      </div>
-      <div>
-        <label>Password</label>
-        <div>
-          <Field name="password" component="input" type="password" placeholder="Password" />
-        </div>
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>
-          Sign In
-        </button>
-      </div>
-    </form>
+    <>
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <form onSubmit={handleSubmit(handleLogin)}>
+          <input type="text" placeholder="Email" {...register('email')} />
+          <input type="password" placeholder="Password" {...register('password')} />
+          <button type="submit">Log In</button>
+        </form>
+      )}
+    </>
   );
 }
 
-export default reduxForm({ form: 'auth' })(LoginForm);
+export default LoginForm;

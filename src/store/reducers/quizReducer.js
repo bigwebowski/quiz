@@ -1,16 +1,14 @@
 import * as actionTypes from '../actions/actionTypes';
-import shuffleArray from '../../helpers/shuffle';
+import shuffleArray from '../../utils/shuffle';
 
 const INITIAL_STATE = {
   questions: [],
   currentQuestion: 0,
   score: 0,
-  timer: {
-    isStarted: false,
-    isFinished: false,
-    startTime: null,
-    finishTime: null,
-  },
+  isStarted: false,
+  isFinished: false,
+  startTime: null,
+  finishTime: null,
   isAnswered: false,
   isLoading: false,
   error: false,
@@ -35,11 +33,8 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         questions: questionsWithAnswersShuffled,
         isLoading: false,
-        timer: {
-          ...state.timer,
-          isStarted: true,
-          startTime: Date.now(),
-        },
+        isStarted: true,
+        startTime: Date.now(),
         error: false,
       };
     case actionTypes.QUESTIONS_FETCH_FAIL:
@@ -62,11 +57,8 @@ const reducer = (state = INITIAL_STATE, action) => {
     case actionTypes.STOP_TIMER: {
       return {
         ...state,
-        timer: {
-          ...state.timer,
-          isFinished: true,
-          finishTime: Date.now(),
-        },
+        isFinished: true,
+        finishTime: Date.now(),
       };
     }
     case actionTypes.RESET_QUIZ:

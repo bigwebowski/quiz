@@ -1,12 +1,23 @@
 import React from 'react';
 import { Formik, Field, Form } from 'formik';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchQuestions } from '../../store/actions';
+
 import './QuizForm.css';
 
 import Button from '../UI/Button/Button';
 
-function QuizForm({ questions, handleAnswerClick, handleNextQuestion, currentQuestion, isAnswered }) {
+function QuizForm() {
+  const dispatch = useDispatch();
+
+  const { questions, currentQuestion } = useSelector(({ quiz }) => quiz);
+
+  console.log(questions);
+
   const { all_answers: allAnswers, correct_answer: correctAnswers } = questions[currentQuestion];
+
+  /*const { all_answers: allAnswers, correct_answer: correctAnswers } = questions[currentQuestion];
 
   const handleSelectAnswers = (values) => handleAnswerClick(values.checked);
 
@@ -19,10 +30,12 @@ function QuizForm({ questions, handleAnswerClick, handleNextQuestion, currentQue
         {answer}
       </label>
     );
-  });
+  });*/
 
   return (
-    <div className="quiz-form">
+    <></>
+
+    /*<div className="quiz-form">
       <Formik
         initialValues={{
           checked: [],
@@ -47,7 +60,7 @@ function QuizForm({ questions, handleAnswerClick, handleNextQuestion, currentQue
           </Form>
         )}
       </Formik>
-    </div>
+    </div>*/
   );
 }
 

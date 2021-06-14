@@ -17,12 +17,15 @@ const questionsFetchFail = (error) => ({
   error,
 });
 
-export const fetchQuestions = () => (dispatch) => {
+export const fetchQuestions = (history) => (dispatch) => {
   dispatch(questionsFetchStart());
 
   axios
     .get(QUESTIONS_DATA)
-    .then((res) => dispatch(questionsFetchSuccess(res.data.results)))
+    .then((res) => {
+      dispatch(questionsFetchSuccess(res.data.results));
+      history.push('/quiz');
+    })
     .catch((err) => dispatch(questionsFetchFail(err)));
 };
 

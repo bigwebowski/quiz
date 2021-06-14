@@ -1,26 +1,28 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { resetQuiz } from '../../store/actions/quizActions';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetQuiz } from '../../store/actions';
 
 import Button from '../UI/Button/Button';
 
-function QuizResults(props) {
-  const finalScore = Math.floor((props.score / props.quizLength) * 100);
-  const totalTime = ((props.finishTime - props.startTime) / 1000).toFixed(2);
-  const averageTime = (+totalTime / props.quizLength).toFixed(2);
+function QuizResults() {
+  const dispatch = useDispatch();
+
+  const { score, questions, startTime, finishTime } = useSelector(({ quiz }) => quiz);
+
+  const onQuizReset = () => dispatch(resetQuiz());
+
+  const finalScore = Math.floor((score / questions.length) * 100);
+  const totalTime = ((finishTime - startTime) / 1000).toFixed(2);
+  const averageTime = (+totalTime / questions.length).toFixed(2);
 
   return (
     <div>
       <p>Your final score is {finalScore}% </p>
       <p>Total time is {totalTime} seconds</p>
       <p>Average answer time for each question is {averageTime} seconds</p>
-      <Button clicked={props.onResetQuiz}>Reset quiz</Button>
+      <Button clicked={onQuizReset}>Reset quiz</Button>
     </div>
   );
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  onResetQuiz: () => dispatch(resetQuiz()),
-});
-
-export default connect(null, mapDispatchToProps)(QuizResults);
+export default QuizResults;

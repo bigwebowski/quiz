@@ -4,15 +4,15 @@ import * as actionTypes from './actionTypes';
 import { SIGN_IN } from '../../constants/endpoints';
 
 const authStart = () => ({ type: actionTypes.AUTH_START });
+
 const authSuccess = (token, userId, expirationDate) => ({
   type: actionTypes.AUTH_SUCCESS,
   token,
   userId,
   expirationDate,
 });
-const authFail = (error) => ({ type: actionTypes.AUTH_FAIL, error });
 
-export const logout = () => ({ type: actionTypes.LOGOUT });
+const authFail = (error) => ({ type: actionTypes.AUTH_FAIL, error });
 
 const checkAuthTimeout = (expiresIn) => (dispatch) => {
   setTimeout(() => {
@@ -20,8 +20,11 @@ const checkAuthTimeout = (expiresIn) => (dispatch) => {
   }, expiresIn * 1000);
 };
 
-export const auth = (email, password) => (dispatch) => {
+export const logout = () => ({ type: actionTypes.LOGOUT });
+
+export const auth = (email, password, history) => (dispatch) => {
   dispatch(authStart());
+
   const authData = {
     email: email,
     password: password,
@@ -35,6 +38,7 @@ export const auth = (email, password) => (dispatch) => {
 
       dispatch(authSuccess(res.data.idToken, res.data.localId, expirationDate));
       dispatch(checkAuthTimeout(res.data.expiresIn));
+      history.push('/');
     })
     .catch((err) => {
       dispatch(authFail(err.response.data.error));
